@@ -10,6 +10,16 @@ const HouseSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }
+}, {
+    toJSON: {
+        virtuals: true
+    }
 });
+
+
+HouseSchema.virtual('thumbnail_url').get(function(){
+    const encodedFilename = encodeURIComponent(this.thumbnail);
+    return `http://localhost:3333/files/${encodedFilename}`;
+})
 
 export default model('House', HouseSchema);
