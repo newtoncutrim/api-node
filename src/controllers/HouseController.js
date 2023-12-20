@@ -9,13 +9,10 @@ class HouseController {
         return res.json(houses);
     }
     async store(req, res){
-        console.log(req.headers);
-        console.log(req.body);
-        console.log(req.file)
 
         const {description, price, status, location} = req.body;
         const {filename} = req.file
-        const {user_id} = req.body;
+        const {user_id} = req.headers;
 
         const house = await House.create({
             user: user_id,
@@ -38,12 +35,10 @@ class HouseController {
  
         const user = await User.findById(user_id);
         const house = await House.findById(id_house);
-        console.log(String(user._id))
-        console.log(String(house.user))
-
+       
         if(String(user._id) !== String(house.user)){
             console.log("Usuário não autorizado");
-            return res.json({error: "Não autorizado"});
+            return res.status(404).json({error: "Não autorizado"});
         }
 
         const houses = await House.updateOne({_id: id_house}, {
@@ -56,8 +51,29 @@ class HouseController {
         });
 
         return res.send(house);
-        
+    }
 
+    async destroy(req, res){
+        const {id_house} = req.params;
+        const {id_user} = req.headers;
+        console.log(id_user)
+        console.log(id_house)
+
+        const user = await User.findById(id_user);
+        const house = await House.findById(id_house);
+
+        if (!user) {
+            console.log("Usuário não encontrado");
+            return res.status(404).json({ error: "Usuário não encontrado" });
+        }
+        if(String(user._id) !== String(house.user)){
+            console.log("Usuário não autorizadoo");
+            return res.status(404).json({error: "Não autorizado"});
+        }
+
+        await House.findByIdAndDelete({_id: id_house})
+
+        return res.json({message: "deletado com sucesso!"})
     }
 }
 
