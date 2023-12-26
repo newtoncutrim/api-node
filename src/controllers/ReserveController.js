@@ -3,6 +3,13 @@ import House from "../models/House";
 import User from "../models/User";
 
 class ReserveController {
+    async index(req, res){
+        const {id_user} = req.headers;
+
+        const reservas = await Reserve.find({user: id_user}).populate('house')
+
+        return res.json(reservas)
+    }
     async store(req, res){
         const {data} = req.body;
         const {id_user} = req.headers;
@@ -31,6 +38,10 @@ class ReserveController {
         await reserva.populate('user');
 
         return res.json(reserva);
+    }
+
+    async destroy(req, res){
+        return res.json({ok: "ok"})
     }
 }
 

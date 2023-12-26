@@ -19,4 +19,8 @@ routes.delete('/houses/:id_house', HouseController.destroy);
 routes.get('/dashboard', Dashboard.show)
 
 routes.post('/house/:id_house/reserve', ReserveController.store);
+
+routes.get('/house/reserve', ReserveController.index);
+
+routes.delete('/house/delete', ReserveController.destroy);
 export default routes;
