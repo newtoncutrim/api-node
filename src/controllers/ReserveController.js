@@ -41,7 +41,12 @@ class ReserveController {
     }
 
     async destroy(req, res){
-        return res.json({ok: "ok"})
+        const {id_house} = req.body;
+        console.log(id_house)
+
+        await Reserve.findOneAndDelete({_id: id_house})
+
+        return res.json({message: "deletado com sucesso"})
     }
 }
 
