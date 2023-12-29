@@ -1,5 +1,6 @@
 import House from "../models/House";
 import User from "../models/User";
+import * as yup from 'yup'; 
 class HouseController {
     
     async index(req, res){
@@ -9,11 +10,19 @@ class HouseController {
         return res.json(houses);
     }
     async store(req, res){
-
+        const schema = yup.object().shape({
+            description: yup.string().required(),
+            price: yup.number().required(),
+            status: yup.boolean().required(),
+            location: yup.string().required()
+        });
         const {description, price, status, location} = req.body;
         const {filename} = req.file
         const {user_id} = req.headers;
 
+        if(!(await schema.isValid(req.body))){
+            return res.status(400).json({error: 'falha na validaçao'})
+        }
         const house = await House.create({
             user: user_id,
             thumbnail: filename,
@@ -27,11 +36,20 @@ class HouseController {
     }
 
     async update(req, res) {
+        const schema = yup.object().shape({
+            description: yup.string().required(),
+            price: yup.number().required(),
+            status: yup.boolean().required(),
+            location: yup.string().required()
+        });
         const {filename} = req.file
         const {id_house} = req.params;
         const {description, price, status, location} = req.body;
         const {user_id} = req.headers;
 
+        if(!(await schema.isValid(req.body))){
+            return res.status(400).json({error: 'falha na validaçao'})
+        }
  
         const user = await User.findById(user_id);
         const house = await House.findById(id_house);
@@ -41,7 +59,7 @@ class HouseController {
             return res.status(404).json({error: "Não autorizado"});
         }
 
-        const houses = await House.updateOne({_id: id_house}, {
+        await House.updateOne({_id: id_house}, {
             user: user_id,
             thumbnail: filename,
             description: description,
@@ -49,8 +67,8 @@ class HouseController {
             location: location,
             status: status
         });
-
-        return res.send(house);
+        const houseEdit = await House.findById(id_house);
+        return res.json(houseEdit);
     }
 
     async destroy(req, res){

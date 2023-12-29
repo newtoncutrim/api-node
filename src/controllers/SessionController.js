@@ -1,9 +1,16 @@
 import User from "../models/User";
+import * as yup from 'yup';
 
 class SessionController {
     async store(req, res){
-        /* console.log(req.body.email) */
+        const schema = yup.object().shape({
+            email: yup.string().required().email(),
+        });
         const { email } = req.body
+        
+        if(!(await schema.isValid(req.body))){
+            return res.status(400).json({error: 'email obrigatorio'})
+        }
         
         let user = await User.findOne({email});
 
