@@ -8,7 +8,7 @@ class App {
         this.server = express();
 
 
-        mongoose.connect('mongodb+srv://newton:saxalto98@cluster0.6ryd864.mongodb.net/?retryWrites=true&w=majority')
+        mongoose.connect('mongodb+srv://newton:<senha>@cluster0.6ryd864.mongodb.net/?retryWrites=true&w=majority')
         this.middleware()
         this.routes()
     }

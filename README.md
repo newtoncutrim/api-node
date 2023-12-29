@@ -2,6 +2,11 @@ Claro, aqui está a documentação em formato Markdown:
 
 # Documentação da API
 
+![API Image](images/Captura%20de%20tela%20de%202023-12-29%2011-41-40.png)
+![API Image](images/Captura%20de%20tela%20de%202023-12-29%2011-41-52.png)
+![API Image](images/Captura%20de%20tela%20de%202023-12-29%2011-43-06.png)
+![API Image](images/Captura%20de%20tela%20de%202023-12-29%2011-43-22.png)
+![API Image](images/Captura%20de%20tela%20de%202023-12-29%2011-43-41.png)
 ## Visão Geral
 
 Esta API fornece endpoints para gerenciar casas para aluguel, reservas e autenticação de usuários.
